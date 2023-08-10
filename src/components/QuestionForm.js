@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function QuestionForm(props) {
+function QuestionForm(onQuestionSubmit) {
   const [formData, setFormData] = useState({
     prompt: "",
     answer1: "",
@@ -19,9 +19,19 @@ function QuestionForm(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(formData);
+    onQuestionSubmit(formData);
   }
-
+ fetch (BASE_URL, {
+ method:'POST' ,
+ headers: {
+  'Content-Type': 'application/json'
+},
+body: JSON.stringify(newQuestion)
+})
+.then(response => response.json())
+.then(data => onQuestionSubmit(data))
+.catch(error => console.error('Error creating question:', error));
+;
   return (
     <section>
       <h1>New Question</h1>
